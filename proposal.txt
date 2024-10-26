@@ -1,0 +1,41 @@
+CSE 111 Proposal for a Student Chosen Program
+
+    (This is a proposal. All proposals are written with our best
+    knowledge at the beginning of a project. As we progress from the
+    beginning to the end of a project, we gain more knowledge, and we
+    change some of our proposed ideas. This is part of completing any
+    project and is fine.  However, we still must write a proposal so
+    that our teachers or supervisors know what we intend to do. Please
+    answer each of the following questions to the best of your
+    knowledge.)
+
+1. What is the title of your program?
+    Text Analytics
+
+2. What real-world problem will your program address or help to solve?
+    This program will help solve many problems such as: understanding a large
+    amount of feedback for a company by identifying frequent positive or negative
+    descriptions, getting the appropriate content in a search engine, or even
+    literary analysis like finding motifs in novels, poems, or songs.
+
+3. What will you learn from developing this program?
+    I will learn more about data structures such as dictionaries and lists and
+    the best way to make this program efficiently, and I will also learn about
+    data analysis, and what things I can do with the words once I have the results.
+    I also will probably learn more about language in general.
+
+4. What Python modules will your program use?
+    I will probbaly use the string module because I will be working with a lot
+    of strings, maybe I will use csv for storing or reading data, and the pytest
+    module to test my functions.
+
+5. List the names of functions you will need?
+    read_file()
+    clean_text()
+    count_words()
+    main()
+
+6. List the names of the test functions you will write.
+    test_read_file()
+    test_clean_text()
+    test_count_words()
