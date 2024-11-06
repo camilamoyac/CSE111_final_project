@@ -1,11 +1,7 @@
-# remember to save the sources I used to learn for my program
-# remember I tried with putting the word amount pairs in a dictionary first but
-# it was easier to print them when they were in a compound list so i changed it
-# into a list
+# this program reads a txt file that contains a text in english (mainly song lyrics and poems but it works with any text)
+# and prints some stats like word amount, repeated and unique words, word diversity ratio, and top ten repeated words.
 
-# 6 hours so far
-# I need to find a way to add a python module maybe math and do some stats with
-# the words?
+import string
 
 def main():
     print("Text Analytics")
@@ -17,6 +13,8 @@ def main():
     while another:
         try:
             file_name = input("\nEnter file name (excluding the .txt): ")
+            print("\n------------------------------------------------------------------------")
+            print(f"Stats for {file_name}")
             file_name = file_name + ".txt"
             text_string = read_file(file_name)
         except FileNotFoundError:
@@ -24,27 +22,37 @@ def main():
             print("Make sure your txt file is in the same directory as this program.\n")
         except PermissionError:
             print("Permission denied for accessing file or directory. Try again with adequate permission.")
-                
+   
         clean_string = format_string(text_string)
         word_list = string_to_list(clean_string)
+        total_words = len(word_list)
         content_word_list = remove_stopwords(word_list)
         word_amount_list = list_to_word_amount_list(content_word_list)
+        unique_words = unique_word_counter(word_amount_list)
         sorted_list = sort_word_amount_list(word_amount_list)
 
-        print("\nHere are the top ten words repeated in your text:")
-        print("WORD          AMOUNT")
+        repeated_words = total_words - unique_words
+        word_diversity = unique_words/total_words
+
+        print(f"\nThe total amount of words is: {total_words}")
+        print(f"The amount of unique words is: {unique_words}")
+        print(f"The amount of repeated words is: {repeated_words}")
+        print(f"The word diversity ratio is: {word_diversity:.2f}")
+        print("\nThe top ten repeated words are:")
+        print("WORD                AMOUNT                PERCENTAGE")
         i = 0
         while i < 10:
             word = sorted_list[i][0]
             amount = sorted_list[i][1]
+            percentage = amount / total_words * 100
 
-            txt = "{:<10}{:>10}"
-            print(txt.format(word, amount))
+            txt = "{:<12}{:>12}{:>24.1f}%"
+            print(txt.format(word, amount, percentage))
             i += 1
 
         print("\n------------------------------------------------------------------------")
         print("Thank you for using Text Analytics")
-        yes_no = input("Would you like to try another text? ")
+        yes_no = input("Would you like to try another text? (yes/no) ")
         if yes_no.lower() == "yes":
             another = True
         else:
@@ -68,47 +76,32 @@ def format_string(text_string):
     clean_string = text_string.lower()
 
     clean_string = clean_string.replace("\n", " ")
-    clean_string = clean_string.replace('"', "")
-    clean_string = clean_string.replace("'", "")
-    clean_string = clean_string.replace("’", "")
+    clean_string = clean_string.replace("’", "")     #these are extra weird characters that string.punctuation doesn't handle correctly
     clean_string = clean_string.replace("‘", "")
-    clean_string = clean_string.replace(",", "")
-    clean_string = clean_string.replace(";", "")
-    clean_string = clean_string.replace(".", "")
     clean_string = clean_string.replace("¡", "")
-    clean_string = clean_string.replace("!", "")
     clean_string = clean_string.replace("¿", "")
-    clean_string = clean_string.replace("?", "")
-    clean_string = clean_string.replace("(", "")
-    clean_string = clean_string.replace(")", "")
-    clean_string = clean_string.replace("{", "")
-    clean_string = clean_string.replace("}", "")
-    clean_string = clean_string.replace("[", "")
-    clean_string = clean_string.replace("]", "")
     clean_string = clean_string.replace("-", " ")
     clean_string = clean_string.replace("_", " ")
     clean_string = clean_string.replace("—", " ")
     clean_string = clean_string.replace("â€", " ")
     clean_string = clean_string.replace("”", "")
     clean_string = clean_string.replace("“", "")
-    clean_string = clean_string.replace("#", "")
-    clean_string = clean_string.replace("$", "")
-    clean_string = clean_string.replace("%", "")
-    clean_string = clean_string.replace("&", "")
-    clean_string = clean_string.replace("/", " ")
-    clean_string = clean_string.replace("+", " ")
-    clean_string = clean_string.replace("=", " ")
-    clean_string = clean_string.replace("*", "")
-    clean_string = clean_string.replace(":", "")
-    clean_string = clean_string.replace("@", "")
+    clean_string = clean_string.replace("´´", "")
     clean_string = clean_string.replace("\\", " ")
-    clean_string = clean_string.replace("^", "")
-    clean_string = clean_string.replace("//", "")
-    clean_string = clean_string.replace("|", "")
     clean_string = clean_string.replace("°", "")
-    clean_string = clean_string.replace("~", "")
-    clean_string = clean_string.replace("π", "")
-    clean_string = clean_string.replace("≈", "")
+
+    clean_string = clean_string.translate(str.maketrans('', '', string.punctuation))
+
+    clean_string = clean_string.replace("0", "")
+    clean_string = clean_string.replace("1", "")
+    clean_string = clean_string.replace("2", "")
+    clean_string = clean_string.replace("3", "")
+    clean_string = clean_string.replace("4", "")
+    clean_string = clean_string.replace("5", "")
+    clean_string = clean_string.replace("6", "")
+    clean_string = clean_string.replace("7", "")
+    clean_string = clean_string.replace("8", "")
+    clean_string = clean_string.replace("9", "")
     clean_string = clean_string.replace("     ", " ")
     clean_string = clean_string.replace("    ", " ")
     clean_string = clean_string.replace("   ", " ")
@@ -150,8 +143,7 @@ def remove_stopwords(word_list):
                  "this", "that", "there", "here", "of", "in", "to", "with",
                  "on", "at", "by", "from", "about", "be", "am", "is", "are",
                  "was", "were", "been", "being", "have", "had", "than", "im",
-                 "your", "has", "1", "2", "3", "4", "5", "6", "7", "8", "9",
-                 "10", "0", "it", "its", "my"]
+                 "your", "has", "it", "its", "my"]
     word_list = [word for word in word_list if word not in stopwords]
     return word_list
 
@@ -160,6 +152,14 @@ def sort_word_amount_list(word_list):
     # is repeated
     sorted_list = sorted(word_list, key=lambda x: x[1], reverse=True)
     return sorted_list
+
+def unique_word_counter(word_amount_list):
+    #returns amount of words that only appear once in the text.
+    count = 0
+    for element in word_amount_list:
+        if element[1]:
+            count += 1
+    return count
 
 if __name__ == "__main__":
     main()
